@@ -1,0 +1,26 @@
+
+
+<ion-content padding>
+  <div class="login">
+    <ion-list>
+      
+      <div style="text-align: center">
+        <img [ngClass]="'logo'" src="https://st2.depositphotos.com/5142301/7567/v/950/depositphotos_75677235-stock-illustration-lion-head-logo.jpg">
+      </div>
+      
+      <ion-item>
+        <ion-label floating>Usuário</ion-label>
+        <ion-input type="email" #user></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating>Senha</ion-label>
+        <ion-input type="password" #password></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <button ion-button full (click)="login(user.value,password.value)">Entrar</button>
+    <button ion-button full clear>Cadastrar</button>
+    <button ion-button full clear>Esqueceu a senha?</button>
+  </div>
+
+</ion-content>

@@ -1,0 +1,26 @@
+<ion-header>
+
+  <ion-navbar [color]="'primary'">
+    <ion-title>Usuario</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <ion-card *ngFor="let m of messeges; index" [ngClass]="m.autor==='a'? 'msg-a': 'msg-b'">
+    <ion-card-content (click)="removeMessage(index)">{{m.text}}</ion-card-content>
+  </ion-card>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-input [(ngModel)]="message" placeholder="Mensagem"></ion-input>
+    <ion-buttons right>
+      <button (click)="recordVoice()" ion-button><ion-icon name="mic"></ion-icon></button>
+      <button (click)="sendMessage()" ion-button><ion-icon name="send"></ion-icon></button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

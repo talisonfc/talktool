@@ -1,0 +1,27 @@
+page-login {
+    .logo{
+        height: 100px;
+        width: 100px;
+        border-radius: 50%;
+        margin-top: 10%;
+    }
+
+    .login{
+        width: 50%;
+        margin-left: 25%;
+    }
+
+    @media (max-width: 600px) {
+        .logo{
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+            margin-top: 30%;
+        }
+
+        .login{
+            width: 100%;
+            margin-left: 0;
+        }
+    }
+}
