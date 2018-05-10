@@ -7,12 +7,6 @@ import { initializeApp } from 'firebase'
 import { LoginPage } from '../pages/login/login';
 
 const config = {
-  apiKey: "AIzaSyC6lYQ8egwo2Mb4thFBXwa9aKPN_6Cl8dU",
-  authDomain: "social-network-9e613.firebaseapp.com",
-  databaseURL: "https://social-network-9e613.firebaseio.com",
-  projectId: "social-network-9e613",
-  storageBucket: "social-network-9e613.appspot.com",
-  messagingSenderId: "193226913521"
 };
 
 @Component({
