@@ -11,15 +11,22 @@ import { HomePage } from '../../pages/home/home'
 export class LoginPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    
   }
   
   login(user, password){
     //console.log(user+" "+password)
     auth().signInWithEmailAndPassword(user, password).then(data=>{
       console.log(data['user'])
-      this.navCtrl.setRoot(HomePage)
+      this.navCtrl.setRoot(HomePage, {login: data['user']})
     }).catch(err=>{
       console.error(err);
     })
+  }
+
+  entrar(user, password, event){
+    if(event.key=="Enter"){
+      this.login(user,password);
+    }
   }
 }

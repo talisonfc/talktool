@@ -4,99 +4,6 @@ webpackJsonp([3],{
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConversaPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__model_conversa_model__ = __webpack_require__(251);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-var ConversaPage = /** @class */ (function () {
-    function ConversaPage(navCtrl, navParams) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.index_end_conteudo = 0;
-        this.message = "";
-        this.conversa = new __WEBPACK_IMPORTED_MODULE_2__model_conversa_model__["a" /* ConversaModel */]();
-        this.messeges = new Array();
-    }
-    ConversaPage.prototype.ngOnInit = function () {
-        var _this = this;
-        this.fluxo = this.navParams.get("conversa");
-        this.fluxo.once("value", function (data) {
-            _this.conversa = data.val();
-            //console.log(this.conversa)
-            if (_this.conversa.conteudo !== undefined) {
-                _this.index_end_conteudo = _this.conversa.conteudo.length;
-                _this.messeges = _this.conversa.conteudo;
-            }
-        });
-        this.fluxo.on("child_added", function (data) {
-            console.log(data.val());
-            _this.messeges = new Array();
-            _this.messeges.push(data.val()[0]);
-        });
-        this.fluxo.on("child_changed", function (data) {
-            _this.messeges = data.val();
-        });
-        this.fluxo.on("child_removed", function (data) {
-            _this.messeges = undefined;
-        });
-    };
-    ConversaPage.prototype.ngOnDestroy = function () {
-    };
-    ConversaPage.prototype.scrollToBottom = function (delay) {
-        var _this = this;
-        setTimeout(function () {
-            _this.content.scrollToBottom(delay);
-        }, 1000);
-    };
-    ConversaPage.prototype.sendMessage = function () {
-        this.index_end_conteudo++;
-        if (this.conversa.conteudo === undefined) {
-            this.conversa.conteudo = new Array();
-        }
-        this.conversa.conteudo.push({ autor: 'a', text: this.message });
-        this.fluxo.update(this.conversa);
-        this.message = "";
-        //this.scrollToBottom(100);
-    };
-    ConversaPage.prototype.removeMessage = function (ind) {
-        this.index_end_conteudo--;
-        this.conversa.conteudo.splice(ind, 1);
-        this.fluxo.update(this.conversa);
-    };
-    ConversaPage.prototype.recordVoice = function () { };
-    __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* Content */]),
-        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* Content */])
-    ], ConversaPage.prototype, "content", void 0);
-    ConversaPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-conversa',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/conversa/conversa.html"*/'<ion-header>\n\n  <ion-navbar [color]="\'primary\'">\n    <ion-title>Usuario</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content>\n\n  <ion-card *ngFor="let m of messeges; index" [ngClass]="m.autor===\'a\'? \'msg-a\': \'msg-b\'">\n    <ion-card-content (click)="removeMessage(index)">{{m.text}}</ion-card-content>\n  </ion-card>\n\n</ion-content>\n\n<ion-footer>\n  <ion-toolbar>\n    <ion-input [(ngModel)]="message" placeholder="Mensagem"></ion-input>\n    <ion-buttons right>\n      <button (click)="recordVoice()" ion-button><ion-icon name="mic"></ion-icon></button>\n      <button (click)="sendMessage()" ion-button><ion-icon name="send"></ion-icon></button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-footer>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/conversa/conversa.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]])
-    ], ConversaPage);
-    return ConversaPage;
-}());
-
-//# sourceMappingURL=conversa.js.map
-
-/***/ }),
-
-/***/ 105:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ContatosPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(30);
@@ -140,6 +47,102 @@ var ContatosPage = /** @class */ (function () {
 
 /***/ }),
 
+/***/ 105:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConversaPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__model_conversa_model__ = __webpack_require__(251);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var ConversaPage = /** @class */ (function () {
+    function ConversaPage(navCtrl, navParams) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.index_end_conteudo = 0;
+        this.message = "";
+        this.conversa = new __WEBPACK_IMPORTED_MODULE_2__model_conversa_model__["a" /* ConversaModel */]();
+    }
+    ConversaPage.prototype.ngOnInit = function () {
+        var _this = this;
+        console.log("[ngOnInit]");
+        this.fluxo = this.navParams.get("conversa");
+        this.uid = this.navParams.get("uid");
+        this.fluxo.on("value", function (data) {
+            console.log("[ONCE FIREBASE EVENT]");
+            _this.conversa = data.val();
+            console.log(_this.conversa);
+            if (_this.conversa.conteudo !== undefined) {
+                console.log("[CONVERSA CONTEUDO != undefined]");
+                _this.index_end_conteudo = _this.conversa.conteudo.length;
+                _this.scrollToBottom(200);
+            }
+        });
+    };
+    ConversaPage.prototype.ngOnDestroy = function () {
+    };
+    ConversaPage.prototype.scrollToBottom = function (delay) {
+        var _this = this;
+        setTimeout(function () {
+            _this.content.scrollToBottom(delay);
+        }, 1000);
+    };
+    ConversaPage.prototype.sendMessage = function () {
+        this.index_end_conteudo++;
+        if (this.conversa.conteudo === undefined) {
+            this.conversa.conteudo = new Array();
+        }
+        if (this.uid == this.conversa.criador) {
+            this.conversa.conteudo.push({ autor: 'a', text: this.message });
+        }
+        else {
+            this.conversa.conteudo.push({ autor: 'b', text: this.message });
+        }
+        this.fluxo.update(this.conversa);
+        this.message = "";
+        //this.scrollToBottom(100);
+    };
+    ConversaPage.prototype.confirme = function (event) {
+        if (event.key == "Enter") {
+            this.sendMessage();
+        }
+    };
+    ConversaPage.prototype.removeMessage = function (ind) {
+        this.index_end_conteudo--;
+        this.conversa.conteudo.splice(ind, 1);
+        this.fluxo.update(this.conversa);
+    };
+    ConversaPage.prototype.recordVoice = function () { };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* Content */]),
+        __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* Content */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* Content */]) === "function" && _a || Object)
+    ], ConversaPage.prototype, "content", void 0);
+    ConversaPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-conversa',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/conversa/conversa.html"*/'<ion-header>\n\n  <ion-navbar [color]="\'primary\'">\n    <ion-title>Usuario</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content>\n  {{messeges | json}}\n  <ion-card *ngFor="let m of conversa.conteudo; index as i" [ngClass]="m.autor===\'a\'? \'msg-a\': \'msg-b\'">\n    <ion-card-content (click)="removeMessage(i)">{{m.text}}</ion-card-content>\n  </ion-card>\n\n</ion-content>\n\n<ion-footer>\n  <ion-toolbar>\n    <ion-input [(ngModel)]="message" (keypress)="confirme($event)" placeholder="Mensagem"></ion-input>\n    <ion-buttons right>\n      <button (click)="recordVoice()" ion-button><ion-icon name="mic"></ion-icon></button>\n      <button (click)="sendMessage()" ion-button><ion-icon name="send"></ion-icon></button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-footer>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/conversa/conversa.html"*/,
+        }),
+        __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]) === "function" && _c || Object])
+    ], ConversaPage);
+    return ConversaPage;
+    var _a, _b, _c;
+}());
+
+//# sourceMappingURL=conversa.js.map
+
+/***/ }),
+
 /***/ 106:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -173,18 +176,24 @@ var LoginPage = /** @class */ (function () {
         //console.log(user+" "+password)
         Object(__WEBPACK_IMPORTED_MODULE_2_firebase__["auth"])().signInWithEmailAndPassword(user, password).then(function (data) {
             console.log(data['user']);
-            _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_3__pages_home_home__["a" /* HomePage */]);
+            _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_3__pages_home_home__["a" /* HomePage */], { login: data['user'] });
         }).catch(function (err) {
             console.error(err);
         });
     };
+    LoginPage.prototype.entrar = function (user, password, event) {
+        if (event.key == "Enter") {
+            this.login(user, password);
+        }
+    };
     LoginPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-login',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/login/login.html"*/'\n\n<ion-content padding>\n  <div class="login">\n    <ion-list>\n      \n      <div style="text-align: center">\n        <img [ngClass]="\'logo\'" src="https://st2.depositphotos.com/5142301/7567/v/950/depositphotos_75677235-stock-illustration-lion-head-logo.jpg">\n      </div>\n      \n      <ion-item>\n        <ion-label floating>Usuário</ion-label>\n        <ion-input type="email" #user></ion-input>\n      </ion-item>\n      <ion-item>\n        <ion-label floating>Senha</ion-label>\n        <ion-input type="password" #password></ion-input>\n      </ion-item>\n    </ion-list>\n\n    <button ion-button full (click)="login(user.value,password.value)">Entrar</button>\n    <button ion-button full clear>Cadastrar</button>\n    <button ion-button full clear>Esqueceu a senha?</button>\n  </div>\n\n</ion-content>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/login/login.html"*/,
+            selector: 'page-login',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/login/login.html"*/'\n\n<ion-content padding>\n  <div class="login">\n    <ion-list>\n      \n      <div style="text-align: center">\n        <img [ngClass]="\'logo\'" src="https://st2.depositphotos.com/5142301/7567/v/950/depositphotos_75677235-stock-illustration-lion-head-logo.jpg">\n      </div>\n      \n      <ion-item>\n        <ion-label floating>Usuário</ion-label>\n        <ion-input type="email" #user value="tfccomputation@gmail.com"></ion-input>\n      </ion-item>\n      <ion-item>\n        <ion-label floating>Senha</ion-label>\n        <ion-input (keypress)="entrar(user.value,password.value, $event)" type="password" #password value="123456"></ion-input>\n      </ion-item>\n    </ion-list>\n\n    <button ion-button full (click)="login(user.value,password.value)">Entrar</button>\n    <button ion-button full clear>Cadastrar</button>\n    <button ion-button full clear>Esqueceu a senha?</button>\n  </div>\n\n</ion-content>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/login/login.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]) === "function" && _b || Object])
     ], LoginPage);
     return LoginPage;
+    var _a, _b;
 }());
 
 //# sourceMappingURL=login.js.map
@@ -213,7 +222,7 @@ webpackEmptyAsyncContext.id = 115;
 
 var map = {
 	"../pages/contatos/contatos.module": [
-		292,
+		290,
 		2
 	],
 	"../pages/conversa/conversa.module": [
@@ -221,7 +230,7 @@ var map = {
 		1
 	],
 	"../pages/login/login.module": [
-		293,
+		292,
 		0
 	]
 };
@@ -248,9 +257,9 @@ module.exports = webpackAsyncContext;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__model_usuario_model__ = __webpack_require__(263);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_conversa_conversa__ = __webpack_require__(104);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_contatos_contatos__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__model_usuario_model__ = __webpack_require__(293);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_conversa_conversa__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_contatos_contatos__ = __webpack_require__(104);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase__ = __webpack_require__(79);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_firebase__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -269,10 +278,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var HomePage = /** @class */ (function () {
-    function HomePage(navCtrl) {
-        var _this = this;
+    function HomePage(navCtrl, navParams) {
         this.navCtrl = navCtrl;
-        this.db = Object(__WEBPACK_IMPORTED_MODULE_5_firebase__["database"])().ref("/usuarios/V4T3a5M0Speck6esVrDY9SkJLHL2");
+        this.navParams = navParams;
         this.usuario = new __WEBPACK_IMPORTED_MODULE_2__model_usuario_model__["a" /* UsuarioModel */]();
         /*
         var db = database().ref("/usuarios")
@@ -280,14 +288,24 @@ var HomePage = /** @class */ (function () {
           console.log(snapshot.val());
         })
         */
+    }
+    HomePage.prototype.ngOnInit = function () {
+        this.login = this.navParams.get("login");
+        //console.log(this.login.uid)
+        this.db = Object(__WEBPACK_IMPORTED_MODULE_5_firebase__["database"])().ref("/usuarios/" + this.login.uid);
+        this.init();
+    };
+    // Carrega dados do banco
+    HomePage.prototype.init = function () {
+        var _this = this;
         this.db.on('value', function (data) {
             _this.usuario = data.val();
         });
-    }
+    };
     HomePage.prototype.openConversa = function (conversa_id) {
         //console.log(conversa_id)
         var conversa = Object(__WEBPACK_IMPORTED_MODULE_5_firebase__["database"])().ref("/conversas/" + conversa_id);
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__pages_conversa_conversa__["a" /* ConversaPage */], { conversa: conversa });
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__pages_conversa_conversa__["a" /* ConversaPage */], { conversa: conversa, uid: this.login.uid });
     };
     HomePage.prototype.listContatos = function () {
         this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__pages_contatos_contatos__["a" /* ContatosPage */]);
@@ -296,9 +314,10 @@ var HomePage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-home',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/home/home.html"*/'<ion-header >\n  <ion-navbar [color]="\'primary\'">\n    <ion-title>\n      <ion-icon name=""></ion-icon> Talk\n    </ion-title>\n    <ion-buttons right>\n      <button ion-button (click)="listContatos()"><ion-icon name="contact"></ion-icon></button>\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-item>\n      {{usuario.nome}}\n    </ion-item>\n\n    <ion-item (click)="openConversa(user.conversa_id)" *ngFor="let user of usuario.conversas">\n      <ion-avatar item-start>\n        <img src="">\n      </ion-avatar>\n      <h2>{{user.destinatario_id}}</h2>\n      <button ion-button clear item-end>5</button>\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/home/home.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]) === "function" && _b || Object])
     ], HomePage);
     return HomePage;
+    var _a, _b;
 }());
 
 //# sourceMappingURL=home.js.map
@@ -329,12 +348,12 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(198);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(201);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__(289);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__(288);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_home_home__ = __webpack_require__(158);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_login_login__ = __webpack_require__(106);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_conversa_conversa__ = __webpack_require__(104);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_contatos_contatos__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_database_database__ = __webpack_require__(290);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_conversa_conversa__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_contatos_contatos__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_database_database__ = __webpack_require__(289);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -368,8 +387,8 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* MyApp */], {}, {
                     links: [
-                        { loadChildren: '../pages/conversa/conversa.module#ConversaPageModule', name: 'ConversaPage', segment: 'conversa', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/contatos/contatos.module#ContatosPageModule', name: 'ContatosPage', segment: 'contatos', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/conversa/conversa.module#ConversaPageModule', name: 'ConversaPage', segment: 'conversa', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] }
                     ]
                 })
@@ -418,22 +437,7 @@ var ConversaModel = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 263:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UsuarioModel; });
-var UsuarioModel = /** @class */ (function () {
-    function UsuarioModel() {
-    }
-    return UsuarioModel;
-}());
-
-//# sourceMappingURL=usuario.model.js.map
-
-/***/ }),
-
-/***/ 289:
+/***/ 288:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -491,7 +495,7 @@ var MyApp = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 290:
+/***/ 289:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -519,6 +523,21 @@ var DatabaseProvider = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=database.js.map
+
+/***/ }),
+
+/***/ 293:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UsuarioModel; });
+var UsuarioModel = /** @class */ (function () {
+    function UsuarioModel() {
+    }
+    return UsuarioModel;
+}());
+
+//# sourceMappingURL=usuario.model.js.map
 
 /***/ })
 
