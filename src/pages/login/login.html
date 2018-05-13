@@ -10,11 +10,11 @@
       
       <ion-item>
         <ion-label floating>Usuário</ion-label>
-        <ion-input type="email" #user></ion-input>
+        <ion-input type="email" #user value="tfccomputation@gmail.com"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label floating>Senha</ion-label>
-        <ion-input type="password" #password></ion-input>
+        <ion-input (keypress)="entrar(user.value,password.value, $event)" type="password" #password value="123456"></ion-input>
       </ion-item>
     </ion-list>
 

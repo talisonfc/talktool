@@ -12,42 +12,31 @@ export class ConversaPage implements OnInit, OnDestroy{
   @ViewChild(Content) content: Content;
   
   conversa: ConversaModel;
-  messeges?: Array<{autor: string, text: string}>
   index_end_conteudo: number = 0;
   message: string = "";
   fluxo: any;
+  uid: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.conversa = new ConversaModel();
-    this.messeges = new Array<{autor: string, text: string}>()
   }
 
   ngOnInit(): void {
+    console.log("[ngOnInit]")
     this.fluxo = this.navParams.get("conversa")
+    this.uid = this.navParams.get("uid");
     
-    this.fluxo.once("value", data=>{
-
+    this.fluxo.on("value", data=>{
+      console.log("[ONCE FIREBASE EVENT]")
       this.conversa = data.val();
-      //console.log(this.conversa)
+      console.log(this.conversa)
       if(this.conversa.conteudo !== undefined){
+        console.log("[CONVERSA CONTEUDO != undefined]")
         this.index_end_conteudo = this.conversa.conteudo.length;
-        this.messeges = this.conversa.conteudo;
+        this.scrollToBottom(200);
       }
     })
-
-    this.fluxo.on("child_added", data=>{
-      console.log(data.val())
-      this.messeges = new Array<any>();
-      this.messeges.push(data.val()[0]);
-    })
-
-    this.fluxo.on("child_changed", data=>{
-      this.messeges = data.val();
-    })
-
-    this.fluxo.on("child_removed", data=>{
-      this.messeges = undefined;
-    })
+    
   }
 
   ngOnDestroy(): void {
@@ -65,10 +54,23 @@ export class ConversaPage implements OnInit, OnDestroy{
     if(this.conversa.conteudo===undefined){
       this.conversa.conteudo = new Array<any>();
     }
-    this.conversa.conteudo.push({autor: 'a', text: this.message})
+
+    if(this.uid == this.conversa.criador){
+      this.conversa.conteudo.push({autor: 'a', text: this.message})
+    }
+    else{
+      this.conversa.conteudo.push({autor: 'b', text: this.message})
+    }
+    
     this.fluxo.update(this.conversa);
     this.message = "";
     //this.scrollToBottom(100);
+  }
+
+  confirme(event: any){
+    if(event.key == "Enter"){
+      this.sendMessage();
+    }
   }
 
   removeMessage(ind:number){
