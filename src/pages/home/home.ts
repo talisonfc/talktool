@@ -51,6 +51,6 @@ export class HomePage implements OnInit {
   }
 
   listContatos(){
-    this.navCtrl.push(ContatosPage)
+    this.navCtrl.push(ContatosPage, {login: this.login})
   }
 }

@@ -25691,6 +25691,15 @@ page-conversa .msg-b {
   margin-left: 19%;
 }
 
+page-conversa .toolbar-background-md {
+  background: #ccc;
+}
+
+page-conversa ion-input, page-conversa ion-textarea {
+  background: white;
+  border-radius: 2px;
+}
+
 page-login .logo {
   height: 100px;
   width: 100px;

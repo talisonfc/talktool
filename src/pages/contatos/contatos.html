@@ -5,10 +5,14 @@
     <ion-title>Contatos</ion-title>
   </ion-navbar>
   
-  <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+  <ion-searchbar [(ngModel)]="busca" (keypress)="find($event)"  (ionInput)="searchItems($event)"></ion-searchbar>
 </ion-header>
 
 
-<ion-content padding>
-
+<ion-content>
+  <ion-card *ngFor="let contact of usuarios">
+    <ion-card-header (click)="addContato(contact)">
+      {{contact.nome}}
+    </ion-card-header>
+  </ion-card>
 </ion-content>
