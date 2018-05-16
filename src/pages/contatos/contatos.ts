@@ -1,28 +1,84 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the ContatosPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { database } from "firebase"
+import { UsuarioModel } from '../../model/usuario.model';
 
 @IonicPage()
 @Component({
   selector: 'page-contatos',
   templateUrl: 'contatos.html',
 })
-export class ContatosPage {
+export class ContatosPage implements OnInit{
+
+  usuarios: Array<UsuarioModel>
+  dbusuarios: any
+  login: any;
+  busca: string
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ContatosPage');
+
+  searchItems($event){
   }
 
-  getItems($event){
-    
+  find(event: any){
+    if(event.code == "Enter"){
+      this.dbusuarios.orderByChild("nome").equalTo(this.busca).on("value", snapshot=>{
+        console.log(snapshot.val())
+        if(snapshot.val() != undefined){
+          this.usuarios = new Array<UsuarioModel>();
+          snapshot.forEach(element => {
+            if(this.login.uid !== element.key){
+              var temp = new UsuarioModel();
+              temp = element.val();
+              temp.key = element.key
+              this.usuarios.push(temp);
+            }
+          });          
+        }
+      })
+    }
+  }
+
+  ngOnInit(){
+
+    this.login = this.navParams.get("login")
+    this.dbusuarios = database().ref("usuarios")
+
+    this.dbusuarios.once("value", snapshot=>{
+      this.usuarios = new Array<UsuarioModel>();
+
+      //console.log(snapshot.val())
+      
+      snapshot.forEach(element => {
+        //console.log(element.val())
+        if(this.login.uid !== element.key){
+          var temp = new UsuarioModel();
+          temp = element.val();
+          temp.key = element.key
+          this.usuarios.push(temp);
+        }
+      });
+      
+    })
+  }
+
+  /**
+   * Metodo para adicionar contato
+   */
+  addContato(contact: any){
+    var dbusuario = database().ref("/usuarios/"+this.login.uid)
+    var dados: any
+    dbusuario.once("value",snapshot=>{
+      dados = snapshot.val();
+
+      if(!dados.contatos){
+        dados.contatos = new Array<any>()
+      }
+      dados.contatos.push(contact.key)
+
+      dbusuario.update(dados);
+    })
   }
 }

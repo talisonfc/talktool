@@ -7,4 +7,13 @@ page-conversa {
         width: 80%;
         margin-left: 19%;
     }
+
+    .toolbar-background-md{
+        background: #ccc;
+    }
+
+    ion-input, ion-textarea{
+        background: white;
+        border-radius: 2px;
+    }
 }

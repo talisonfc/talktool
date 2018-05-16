@@ -7,6 +7,9 @@ webpackJsonp([3],{
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ContatosPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(30);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_firebase__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__model_usuario_model__ = __webpack_require__(263);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -18,29 +21,75 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-/**
- * Generated class for the ContatosPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+
+
 var ContatosPage = /** @class */ (function () {
     function ContatosPage(navCtrl, navParams) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
     }
-    ContatosPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad ContatosPage');
+    ContatosPage.prototype.searchItems = function ($event) {
     };
-    ContatosPage.prototype.getItems = function ($event) {
+    ContatosPage.prototype.find = function (event) {
+        var _this = this;
+        if (event.code == "Enter") {
+            this.dbusuarios.orderByChild("nome").equalTo(this.busca).on("value", function (snapshot) {
+                console.log(snapshot.val());
+                if (snapshot.val() != undefined) {
+                    _this.usuarios = new Array();
+                    snapshot.forEach(function (element) {
+                        if (_this.login.uid !== element.key) {
+                            var temp = new __WEBPACK_IMPORTED_MODULE_3__model_usuario_model__["a" /* UsuarioModel */]();
+                            temp = element.val();
+                            temp.key = element.key;
+                            _this.usuarios.push(temp);
+                        }
+                    });
+                }
+            });
+        }
+    };
+    ContatosPage.prototype.ngOnInit = function () {
+        var _this = this;
+        this.login = this.navParams.get("login");
+        this.dbusuarios = Object(__WEBPACK_IMPORTED_MODULE_2_firebase__["database"])().ref("usuarios");
+        this.dbusuarios.once("value", function (snapshot) {
+            _this.usuarios = new Array();
+            //console.log(snapshot.val())
+            snapshot.forEach(function (element) {
+                //console.log(element.val())
+                if (_this.login.uid !== element.key) {
+                    var temp = new __WEBPACK_IMPORTED_MODULE_3__model_usuario_model__["a" /* UsuarioModel */]();
+                    temp = element.val();
+                    temp.key = element.key;
+                    _this.usuarios.push(temp);
+                }
+            });
+        });
+    };
+    /**
+     * Metodo para adicionar contato
+     */
+    ContatosPage.prototype.addContato = function (contact) {
+        var dbusuario = Object(__WEBPACK_IMPORTED_MODULE_2_firebase__["database"])().ref("/usuarios/" + this.login.uid);
+        var dados;
+        dbusuario.once("value", function (snapshot) {
+            dados = snapshot.val();
+            if (!dados.contatos) {
+                dados.contatos = new Array();
+            }
+            dados.contatos.push(contact.key);
+            dbusuario.update(dados);
+        });
     };
     ContatosPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-contatos',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/contatos/contatos.html"*/'\n<ion-header>\n\n  <ion-navbar [color]="\'primary\'">\n    <ion-title>Contatos</ion-title>\n  </ion-navbar>\n  \n  <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>\n</ion-header>\n\n\n<ion-content padding>\n\n</ion-content>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/contatos/contatos.html"*/,
+            selector: 'page-contatos',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/contatos/contatos.html"*/'\n<ion-header>\n\n  <ion-navbar [color]="\'primary\'">\n    <ion-title>Contatos</ion-title>\n  </ion-navbar>\n  \n  <ion-searchbar [(ngModel)]="busca" (keypress)="find($event)"  (ionInput)="searchItems($event)"></ion-searchbar>\n</ion-header>\n\n\n<ion-content>\n  <ion-card *ngFor="let contact of usuarios">\n    <ion-card-header (click)="addContato(contact)">\n      {{contact.nome}}\n    </ion-card-header>\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/contatos/contatos.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]) === "function" && _b || Object])
     ], ContatosPage);
     return ContatosPage;
+    var _a, _b;
 }());
 
 //# sourceMappingURL=contatos.js.map
@@ -54,7 +103,7 @@ var ContatosPage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConversaPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__model_conversa_model__ = __webpack_require__(251);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__model_conversa_model__ = __webpack_require__(262);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -87,7 +136,7 @@ var ConversaPage = /** @class */ (function () {
             if (_this.conversa.conteudo !== undefined) {
                 console.log("[CONVERSA CONTEUDO != undefined]");
                 _this.index_end_conteudo = _this.conversa.conteudo.length;
-                _this.scrollToBottom(200);
+                //this.scrollToBottom(200);
             }
         });
     };
@@ -127,16 +176,15 @@ var ConversaPage = /** @class */ (function () {
     ConversaPage.prototype.recordVoice = function () { };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_8" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* Content */]),
-        __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* Content */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* Content */]) === "function" && _a || Object)
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* Content */])
     ], ConversaPage.prototype, "content", void 0);
     ConversaPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-conversa',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/conversa/conversa.html"*/'<ion-header>\n\n  <ion-navbar [color]="\'primary\'">\n    <ion-title>Usuario</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content>\n  {{messeges | json}}\n  <ion-card *ngFor="let m of conversa.conteudo; index as i" [ngClass]="m.autor===\'a\'? \'msg-a\': \'msg-b\'">\n    <ion-card-content (click)="removeMessage(i)">{{m.text}}</ion-card-content>\n  </ion-card>\n\n</ion-content>\n\n<ion-footer>\n  <ion-toolbar>\n    <ion-input [(ngModel)]="message" (keypress)="confirme($event)" placeholder="Mensagem"></ion-input>\n    <ion-buttons right>\n      <button (click)="recordVoice()" ion-button><ion-icon name="mic"></ion-icon></button>\n      <button (click)="sendMessage()" ion-button><ion-icon name="send"></ion-icon></button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-footer>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/conversa/conversa.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]) === "function" && _c || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]])
     ], ConversaPage);
     return ConversaPage;
-    var _a, _b, _c;
 }());
 
 //# sourceMappingURL=conversa.js.map
@@ -150,7 +198,7 @@ var ConversaPage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_firebase__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_home_home__ = __webpack_require__(158);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -188,12 +236,11 @@ var LoginPage = /** @class */ (function () {
     };
     LoginPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-login',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/login/login.html"*/'\n\n<ion-content padding>\n  <div class="login">\n    <ion-list>\n      \n      <div style="text-align: center">\n        <img [ngClass]="\'logo\'" src="https://st2.depositphotos.com/5142301/7567/v/950/depositphotos_75677235-stock-illustration-lion-head-logo.jpg">\n      </div>\n      \n      <ion-item>\n        <ion-label floating>Usuário</ion-label>\n        <ion-input type="email" #user value="tfccomputation@gmail.com"></ion-input>\n      </ion-item>\n      <ion-item>\n        <ion-label floating>Senha</ion-label>\n        <ion-input (keypress)="entrar(user.value,password.value, $event)" type="password" #password value="123456"></ion-input>\n      </ion-item>\n    </ion-list>\n\n    <button ion-button full (click)="login(user.value,password.value)">Entrar</button>\n    <button ion-button full clear>Cadastrar</button>\n    <button ion-button full clear>Esqueceu a senha?</button>\n  </div>\n\n</ion-content>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/login/login.html"*/,
+            selector: 'page-login',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/login/login.html"*/'\n\n<ion-content padding>\n  <div class="login">\n    <ion-list>\n      \n      <div style="text-align: center">\n        <img [ngClass]="\'logo\'" src="https://st2.depositphotos.com/5142301/7567/v/950/depositphotos_75677235-stock-illustration-lion-head-logo.jpg">\n      </div>\n      \n      <ion-item>\n        <ion-label floating>Usuário</ion-label>\n        <ion-input type="email" #user value="talisonfer@ufrn.com.br"></ion-input>\n      </ion-item>\n      <ion-item>\n        <ion-label floating>Senha</ion-label>\n        <ion-input (keypress)="entrar(user.value,password.value, $event)" type="password" #password value="123456"></ion-input>\n      </ion-item>\n    </ion-list>\n\n    <button ion-button full (click)="login(user.value,password.value)">Entrar</button>\n    <button ion-button full clear>Cadastrar</button>\n    <button ion-button full clear>Esqueceu a senha?</button>\n  </div>\n\n</ion-content>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/login/login.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]) === "function" && _b || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]])
     ], LoginPage);
     return LoginPage;
-    var _a, _b;
 }());
 
 //# sourceMappingURL=login.js.map
@@ -222,15 +269,15 @@ webpackEmptyAsyncContext.id = 115;
 
 var map = {
 	"../pages/contatos/contatos.module": [
-		290,
+		291,
 		2
 	],
 	"../pages/conversa/conversa.module": [
-		291,
+		292,
 		1
 	],
 	"../pages/login/login.module": [
-		292,
+		293,
 		0
 	]
 };
@@ -257,10 +304,10 @@ module.exports = webpackAsyncContext;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__model_usuario_model__ = __webpack_require__(293);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__model_usuario_model__ = __webpack_require__(263);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_conversa_conversa__ = __webpack_require__(105);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_contatos_contatos__ = __webpack_require__(104);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_firebase__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -308,11 +355,11 @@ var HomePage = /** @class */ (function () {
         this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__pages_conversa_conversa__["a" /* ConversaPage */], { conversa: conversa, uid: this.login.uid });
     };
     HomePage.prototype.listContatos = function () {
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__pages_contatos_contatos__["a" /* ContatosPage */]);
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__pages_contatos_contatos__["a" /* ContatosPage */], { login: this.login });
     };
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/home/home.html"*/'<ion-header >\n  <ion-navbar [color]="\'primary\'">\n    <ion-title>\n      <ion-icon name=""></ion-icon> Talk\n    </ion-title>\n    <ion-buttons right>\n      <button ion-button (click)="listContatos()"><ion-icon name="contact"></ion-icon></button>\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-item>\n      {{usuario.nome}}\n    </ion-item>\n\n    <ion-item (click)="openConversa(user.conversa_id)" *ngFor="let user of usuario.conversas">\n      <ion-avatar item-start>\n        <img src="">\n      </ion-avatar>\n      <h2>{{user.destinatario_id}}</h2>\n      <button ion-button clear item-end>5</button>\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/home/home.html"*/,
+            selector: 'page-home',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/home/home.html"*/'<ion-header >\n  <ion-navbar [color]="\'primary\'">\n    <ion-title>\n      <ion-icon name=""></ion-icon> Talk - {{usuario.nome}}\n    </ion-title>\n    <ion-buttons right>\n      <button ion-button (click)="listContatos()"><ion-icon name="contact"></ion-icon></button>\n    </ion-buttons>\n  </ion-navbar>\n  \n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-item (click)="openConversa(user.conversa_id)" *ngFor="let user of usuario.conversas">\n      <ion-avatar item-start>\n        <img src="">\n      </ion-avatar>\n      <h2>{{user.destinatario_id}}</h2>\n      <button ion-button clear item-end>5</button>\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/home/home.html"*/,
         }),
         __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]) === "function" && _b || Object])
     ], HomePage);
@@ -348,12 +395,12 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(198);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(201);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__(288);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__(289);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_home_home__ = __webpack_require__(158);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_login_login__ = __webpack_require__(106);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_conversa_conversa__ = __webpack_require__(105);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_contatos_contatos__ = __webpack_require__(104);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_database_database__ = __webpack_require__(289);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_database_database__ = __webpack_require__(290);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -416,7 +463,7 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 251:
+/***/ 262:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -437,7 +484,22 @@ var ConversaModel = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 288:
+/***/ 263:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UsuarioModel; });
+var UsuarioModel = /** @class */ (function () {
+    function UsuarioModel() {
+    }
+    return UsuarioModel;
+}());
+
+//# sourceMappingURL=usuario.model.js.map
+
+/***/ }),
+
+/***/ 289:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -446,7 +508,7 @@ var ConversaModel = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(201);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(198);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_firebase__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_firebase__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_firebase__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_login_login__ = __webpack_require__(106);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -495,7 +557,7 @@ var MyApp = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 289:
+/***/ 290:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -523,21 +585,6 @@ var DatabaseProvider = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=database.js.map
-
-/***/ }),
-
-/***/ 293:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UsuarioModel; });
-var UsuarioModel = /** @class */ (function () {
-    function UsuarioModel() {
-    }
-    return UsuarioModel;
-}());
-
-//# sourceMappingURL=usuario.model.js.map
 
 /***/ })
 

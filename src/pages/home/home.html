@@ -1,20 +1,17 @@
 <ion-header >
   <ion-navbar [color]="'primary'">
     <ion-title>
-      <ion-icon name=""></ion-icon> Talk
+      <ion-icon name=""></ion-icon> Talk - {{usuario.nome}}
     </ion-title>
     <ion-buttons right>
       <button ion-button (click)="listContatos()"><ion-icon name="contact"></ion-icon></button>
     </ion-buttons>
   </ion-navbar>
+  
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <ion-item>
-      {{usuario.nome}}
-    </ion-item>
-
     <ion-item (click)="openConversa(user.conversa_id)" *ngFor="let user of usuario.conversas">
       <ion-avatar item-start>
         <img src="">

@@ -33,7 +33,7 @@ export class ConversaPage implements OnInit, OnDestroy{
       if(this.conversa.conteudo !== undefined){
         console.log("[CONVERSA CONTEUDO != undefined]")
         this.index_end_conteudo = this.conversa.conteudo.length;
-        this.scrollToBottom(200);
+        //this.scrollToBottom(200);
       }
     })
     
