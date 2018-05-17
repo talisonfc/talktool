@@ -16,3 +16,7 @@ Aplicação de troca de mensagem
 ## Criar uma conversa
 [IMPLEMENTADO] Navega ate a lista de contatos e selecionar um dos contados para conversar. Assim, é criado uma conversa que conectará o usuario remetente com o destinatário
 ## Criar PIPE para busca informaçoes dos usuario a partir de sua key
+## Captura audio
+## Criar mensagem de audio
+## Enviar audio
+## Stream de audio
