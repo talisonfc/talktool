@@ -1,0 +1,18 @@
+
+<ion-header>
+
+  <ion-navbar [color]="'primary'">
+    <ion-title>Buscar contato</ion-title>
+  </ion-navbar>
+
+  <ion-searchbar [(ngModel)]="busca" (keypress)="find($event)"  (ionInput)="searchItems($event)"></ion-searchbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card *ngFor="let contact of usuarios">
+    <ion-card-header (click)="addContato(contact)">
+      {{contact.nome}}
+    </ion-card-header>
+  </ion-card>
+</ion-content>

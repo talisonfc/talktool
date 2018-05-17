@@ -10,9 +10,9 @@ Aplicação de troca de mensagem
 ## Abrir uma coversa
 [IMPLEMENTADO] Abrir uma conversa para trocar mensagem de texto
 
-## Criar uma conversa
 ## Numero de mensagens não lida
 ## Adiciona novo contato
-[IMPLEMENTADO] Realiza um busca e gera uma lista de busca para ser adicionado
-
-## Cria nova conversa
+[IMPLEMENTADO] Realiza uma busca e gera uma lista de usuarios para ser escolhido
+## Criar uma conversa
+[IMPLEMENTADO] Navega ate a lista de contatos e selecionar um dos contados para conversar. Assim, é criado uma conversa que conectará o usuario remetente com o destinatário
+## Criar PIPE para busca informaçoes dos usuario a partir de sua key
