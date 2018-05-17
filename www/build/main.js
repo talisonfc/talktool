@@ -1,15 +1,15 @@
-webpackJsonp([3],{
+webpackJsonp([4],{
 
 /***/ 104:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ContatosPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BuscarContatoPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_firebase__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__model_usuario_model__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__model_usuario_model__ = __webpack_require__(159);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -23,33 +23,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-var ContatosPage = /** @class */ (function () {
-    function ContatosPage(navCtrl, navParams) {
+var BuscarContatoPage = /** @class */ (function () {
+    function BuscarContatoPage(navCtrl, navParams) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
     }
-    ContatosPage.prototype.searchItems = function ($event) {
-    };
-    ContatosPage.prototype.find = function (event) {
-        var _this = this;
-        if (event.code == "Enter") {
-            this.dbusuarios.orderByChild("nome").equalTo(this.busca).on("value", function (snapshot) {
-                console.log(snapshot.val());
-                if (snapshot.val() != undefined) {
-                    _this.usuarios = new Array();
-                    snapshot.forEach(function (element) {
-                        if (_this.login.uid !== element.key) {
-                            var temp = new __WEBPACK_IMPORTED_MODULE_3__model_usuario_model__["a" /* UsuarioModel */]();
-                            temp = element.val();
-                            temp.key = element.key;
-                            _this.usuarios.push(temp);
-                        }
-                    });
-                }
-            });
-        }
-    };
-    ContatosPage.prototype.ngOnInit = function () {
+    BuscarContatoPage.prototype.ngOnInit = function () {
         var _this = this;
         this.login = this.navParams.get("login");
         this.dbusuarios = Object(__WEBPACK_IMPORTED_MODULE_2_firebase__["database"])().ref("usuarios");
@@ -70,7 +49,7 @@ var ContatosPage = /** @class */ (function () {
     /**
      * Metodo para adicionar contato
      */
-    ContatosPage.prototype.addContato = function (contact) {
+    BuscarContatoPage.prototype.addContato = function (contact) {
         var dbusuario = Object(__WEBPACK_IMPORTED_MODULE_2_firebase__["database"])().ref("/usuarios/" + this.login.uid);
         var dados;
         dbusuario.once("value", function (snapshot) {
@@ -82,9 +61,106 @@ var ContatosPage = /** @class */ (function () {
             dbusuario.update(dados);
         });
     };
+    BuscarContatoPage.prototype.searchItems = function ($event) {
+    };
+    BuscarContatoPage.prototype.find = function (event) {
+        var _this = this;
+        if (event.code == "Enter") {
+            this.dbusuarios.orderByChild("nome").equalTo(this.busca).on("value", function (snapshot) {
+                console.log(snapshot.val());
+                if (snapshot.val() != undefined) {
+                    _this.usuarios = new Array();
+                    snapshot.forEach(function (element) {
+                        if (_this.login.uid !== element.key) {
+                            var temp = new __WEBPACK_IMPORTED_MODULE_3__model_usuario_model__["a" /* UsuarioModel */]();
+                            temp = element.val();
+                            temp.key = element.key;
+                            _this.usuarios.push(temp);
+                        }
+                    });
+                }
+            });
+        }
+    };
+    BuscarContatoPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-buscar-contato',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/buscar-contato/buscar-contato.html"*/'\n<ion-header>\n\n  <ion-navbar [color]="\'primary\'">\n    <ion-title>Buscar contato</ion-title>\n  </ion-navbar>\n\n  <ion-searchbar [(ngModel)]="busca" (keypress)="find($event)"  (ionInput)="searchItems($event)"></ion-searchbar>\n</ion-header>\n\n\n<ion-content padding>\n  <ion-card *ngFor="let contact of usuarios">\n    <ion-card-header (click)="addContato(contact)">\n      {{contact.nome}}\n    </ion-card-header>\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/buscar-contato/buscar-contato.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]])
+    ], BuscarContatoPage);
+    return BuscarContatoPage;
+}());
+
+//# sourceMappingURL=buscar-contato.js.map
+
+/***/ }),
+
+/***/ 105:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ContatosPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_firebase__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__buscar_contato_buscar_contato__ = __webpack_require__(104);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ContatosPage = /** @class */ (function () {
+    function ContatosPage(navCtrl, navParams) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+    }
+    ContatosPage.prototype.ngOnInit = function () {
+        var _this = this;
+        this.login = this.navParams.get("login");
+        this.dbusuario = this.navParams.get("db");
+        this.dbusuario.on("value", function (snapshot) {
+            _this.usuario = snapshot.val();
+        });
+    };
+    ContatosPage.prototype.searchContatos = function () {
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__buscar_contato_buscar_contato__["a" /* BuscarContatoPage */], { login: this.login });
+    };
+    /**
+     *
+     * @param contato key do contato
+     */
+    ContatosPage.prototype.createConversa = function (contato) {
+        var _this = this;
+        var dbconversa = Object(__WEBPACK_IMPORTED_MODULE_2_firebase__["database"])().ref("/conversas");
+        dbconversa.push({ criador: this.login.uid }).then(function (data) {
+            if (_this.usuario.conversas == undefined) {
+                _this.usuario.conversas = new Array();
+            }
+            _this.usuario.conversas.push({ conversa_id: data.key, destinatario_id: contato });
+            _this.dbusuario.update(_this.usuario);
+            var dbdestinatario = Object(__WEBPACK_IMPORTED_MODULE_2_firebase__["database"])().ref("/usuarios/" + contato);
+            dbdestinatario.once("value", function (snapshot) {
+                var destinatario = snapshot.val();
+                if (destinatario.conversas == undefined) {
+                    destinatario.conversas = new Array();
+                }
+                destinatario.conversas.push({ conversa_id: data.key, destinatario_id: _this.login.uid });
+                dbdestinatario.update(destinatario);
+            });
+        });
+    };
     ContatosPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-contatos',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/contatos/contatos.html"*/'\n<ion-header>\n\n  <ion-navbar [color]="\'primary\'">\n    <ion-title>Contatos</ion-title>\n  </ion-navbar>\n  \n  <ion-searchbar [(ngModel)]="busca" (keypress)="find($event)"  (ionInput)="searchItems($event)"></ion-searchbar>\n</ion-header>\n\n\n<ion-content>\n  <ion-card *ngFor="let contact of usuarios">\n    <ion-card-header (click)="addContato(contact)">\n      {{contact.nome}}\n    </ion-card-header>\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/contatos/contatos.html"*/,
+            selector: 'page-contatos',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/contatos/contatos.html"*/'\n<ion-header>\n\n  <ion-navbar [color]="\'primary\'">\n    <ion-title>Contatos</ion-title>\n    <ion-buttons right>\n      <button ion-button (click)="searchContatos()"><ion-icon name="search"></ion-icon></button>\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content>\n  <ion-card *ngFor="let contato of usuario.contatos">\n    <ion-card-header (click)="createConversa(contato)">\n      {{contato}}\n    </ion-card-header>\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/contatos/contatos.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]])
     ], ContatosPage);
@@ -95,14 +171,14 @@ var ContatosPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 105:
+/***/ 106:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConversaPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__model_conversa_model__ = __webpack_require__(263);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__model_conversa_model__ = __webpack_require__(264);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -190,16 +266,16 @@ var ConversaPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 106:
+/***/ 107:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_firebase__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_home_home__ = __webpack_require__(159);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_home_home__ = __webpack_require__(160);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -246,7 +322,7 @@ var LoginPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 115:
+/***/ 116:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -259,24 +335,28 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 115;
+webpackEmptyAsyncContext.id = 116;
 
 /***/ }),
 
-/***/ 156:
+/***/ 157:
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
+	"../pages/buscar-contato/buscar-contato.module": [
+		294,
+		3
+	],
 	"../pages/contatos/contatos.module": [
-		291,
+		295,
 		2
 	],
 	"../pages/conversa/conversa.module": [
-		292,
+		296,
 		1
 	],
 	"../pages/login/login.module": [
-		293,
+		297,
 		0
 	]
 };
@@ -291,12 +371,12 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
 	return Object.keys(map);
 };
-webpackAsyncContext.id = 156;
+webpackAsyncContext.id = 157;
 module.exports = webpackAsyncContext;
 
 /***/ }),
 
-/***/ 158:
+/***/ 159:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -311,17 +391,17 @@ var UsuarioModel = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 159:
+/***/ 160:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__model_usuario_model__ = __webpack_require__(158);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_conversa_conversa__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_contatos_contatos__ = __webpack_require__(104);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__model_usuario_model__ = __webpack_require__(159);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_conversa_conversa__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_contatos_contatos__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_firebase__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -369,11 +449,11 @@ var HomePage = /** @class */ (function () {
         this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__pages_conversa_conversa__["a" /* ConversaPage */], { conversa: conversa, uid: this.login.uid });
     };
     HomePage.prototype.listContatos = function () {
-        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__pages_contatos_contatos__["a" /* ContatosPage */], { login: this.login });
+        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__pages_contatos_contatos__["a" /* ContatosPage */], { login: this.login, db: this.db });
     };
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/home/home.html"*/'<ion-header >\n  <ion-navbar [color]="\'primary\'">\n    <ion-title>\n      <ion-icon name=""></ion-icon> Talk - {{usuario.nome}}\n    </ion-title>\n    <ion-buttons right>\n      <button ion-button (click)="listContatos()"><ion-icon name="contact"></ion-icon></button>\n    </ion-buttons>\n  </ion-navbar>\n  \n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-item (click)="openConversa(user.conversa_id)" *ngFor="let user of usuario.conversas">\n      <ion-avatar item-start>\n        <img src="">\n      </ion-avatar>\n      <h2>{{user.destinatario_id}}</h2>\n      <button ion-button clear item-end>5</button>\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/home/home.html"*/,
+            selector: 'page-home',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/home/home.html"*/'<ion-header >\n  <ion-navbar [color]="\'primary\'">\n    <ion-title>\n      <ion-icon name=""></ion-icon> Talk - {{usuario.nome}}\n    </ion-title>\n    <ion-buttons right>\n      <button ion-button (click)="listContatos()"><ion-icon name="contact"></ion-icon></button>\n    </ion-buttons>\n  </ion-navbar>\n  \n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-item (click)="openConversa(user.conversa_id)" *ngFor="let user of usuario.conversas">\n      <ion-avatar item-start>\n        <img src="">\n      </ion-avatar>\n      <h2>{{user.destinatario_id | infoUser}}</h2>\n      <button ion-button clear item-end>5</button>\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/home/home.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]])
     ], HomePage);
@@ -384,13 +464,13 @@ var HomePage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 203:
+/***/ 204:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(204);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(226);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(205);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(227);
 
 
 Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_1__app_module__["a" /* AppModule */]);
@@ -398,28 +478,32 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 /***/ }),
 
-/***/ 226:
+/***/ 227:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(199);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(202);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__(289);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_home_home__ = __webpack_require__(159);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_login_login__ = __webpack_require__(106);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_conversa_conversa__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_contatos_contatos__ = __webpack_require__(104);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_database_database__ = __webpack_require__(290);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__(290);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_home_home__ = __webpack_require__(160);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_login_login__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_conversa_conversa__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_contatos_contatos__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_buscar_contato_buscar_contato__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__providers_database_database__ = __webpack_require__(291);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pipes_pipes_module__ = __webpack_require__(292);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -441,17 +525,20 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_6__pages_home_home__["a" /* HomePage */],
                 __WEBPACK_IMPORTED_MODULE_8__pages_conversa_conversa__["a" /* ConversaPage */],
                 __WEBPACK_IMPORTED_MODULE_9__pages_contatos_contatos__["a" /* ContatosPage */],
-                __WEBPACK_IMPORTED_MODULE_7__pages_login_login__["a" /* LoginPage */]
+                __WEBPACK_IMPORTED_MODULE_7__pages_login_login__["a" /* LoginPage */],
+                __WEBPACK_IMPORTED_MODULE_10__pages_buscar_contato_buscar_contato__["a" /* BuscarContatoPage */]
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* MyApp */], {}, {
                     links: [
+                        { loadChildren: '../pages/buscar-contato/buscar-contato.module#BuscarContatoPageModule', name: 'BuscarContatoPage', segment: 'buscar-contato', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/contatos/contatos.module#ContatosPageModule', name: 'ContatosPage', segment: 'contatos', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/conversa/conversa.module#ConversaPageModule', name: 'ConversaPage', segment: 'conversa', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] }
                     ]
-                })
+                }),
+                __WEBPACK_IMPORTED_MODULE_12__pipes_pipes_module__["a" /* PipesModule */]
             ],
             bootstrap: [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["b" /* IonicApp */]],
             entryComponents: [
@@ -459,13 +546,14 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_6__pages_home_home__["a" /* HomePage */],
                 __WEBPACK_IMPORTED_MODULE_8__pages_conversa_conversa__["a" /* ConversaPage */],
                 __WEBPACK_IMPORTED_MODULE_9__pages_contatos_contatos__["a" /* ContatosPage */],
-                __WEBPACK_IMPORTED_MODULE_7__pages_login_login__["a" /* LoginPage */]
+                __WEBPACK_IMPORTED_MODULE_7__pages_login_login__["a" /* LoginPage */],
+                __WEBPACK_IMPORTED_MODULE_10__pages_buscar_contato_buscar_contato__["a" /* BuscarContatoPage */]
             ],
             providers: [
                 __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__["a" /* StatusBar */],
                 __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */],
                 { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["u" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["c" /* IonicErrorHandler */] },
-                __WEBPACK_IMPORTED_MODULE_10__providers_database_database__["a" /* DatabaseProvider */]
+                __WEBPACK_IMPORTED_MODULE_11__providers_database_database__["a" /* DatabaseProvider */]
             ]
         })
     ], AppModule);
@@ -476,7 +564,7 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 263:
+/***/ 264:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -497,18 +585,18 @@ var ConversaModel = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 289:
+/***/ 290:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(30);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(202);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(199);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_firebase__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_firebase__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_firebase__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_login_login__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_login_login__ = __webpack_require__(107);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -548,7 +636,7 @@ var MyApp = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 290:
+/***/ 291:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -577,7 +665,84 @@ var DatabaseProvider = /** @class */ (function () {
 
 //# sourceMappingURL=database.js.map
 
+/***/ }),
+
+/***/ 292:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PipesModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__info_user_info_user__ = __webpack_require__(293);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var PipesModule = /** @class */ (function () {
+    function PipesModule() {
+    }
+    PipesModule = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["I" /* NgModule */])({
+            declarations: [__WEBPACK_IMPORTED_MODULE_1__info_user_info_user__["a" /* InfoUserPipe */]],
+            imports: [],
+            exports: [__WEBPACK_IMPORTED_MODULE_1__info_user_info_user__["a" /* InfoUserPipe */]]
+        })
+    ], PipesModule);
+    return PipesModule;
+}());
+
+//# sourceMappingURL=pipes.module.js.map
+
+/***/ }),
+
+/***/ 293:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InfoUserPipe; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_firebase__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_firebase__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var InfoUserPipe = /** @class */ (function () {
+    function InfoUserPipe() {
+    }
+    /**
+     * Takes a value and makes it lowercase.
+     */
+    InfoUserPipe.prototype.transform = function (value) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        var dbusuario = Object(__WEBPACK_IMPORTED_MODULE_1_firebase__["database"])().ref('/usuarios/' + value);
+        dbusuario.once("value", function (snapshot) {
+            console.log(snapshot.val());
+            return snapshot.val().nome;
+        });
+    };
+    InfoUserPipe = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["S" /* Pipe */])({
+            name: 'infoUser',
+        })
+    ], InfoUserPipe);
+    return InfoUserPipe;
+}());
+
+//# sourceMappingURL=info-user.js.map
+
 /***/ })
 
-},[203]);
+},[204]);
 //# sourceMappingURL=main.js.map

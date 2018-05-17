@@ -9,8 +9,10 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login'
 import { ConversaPage } from '../pages/conversa/conversa'
 import { ContatosPage } from '../pages/contatos/contatos'
+import { BuscarContatoPage } from '../pages/buscar-contato/buscar-contato'
 
 import { DatabaseProvider } from '../providers/database/database';
+import { PipesModule } from "../pipes/pipes.module"
 
 @NgModule({
   declarations: [
@@ -18,11 +20,13 @@ import { DatabaseProvider } from '../providers/database/database';
     HomePage,
     ConversaPage,
     ContatosPage,
-    LoginPage
+    LoginPage,
+    BuscarContatoPage
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    PipesModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -30,7 +34,8 @@ import { DatabaseProvider } from '../providers/database/database';
     HomePage,
     ConversaPage,
     ContatosPage,
-    LoginPage
+    LoginPage,
+    BuscarContatoPage
   ],
   providers: [
     StatusBar,

@@ -25678,6 +25678,10 @@ ion-navbar.toolbar {
   min-height: calc(46px + env(safe-area-inset-bottom));
 }
 
+page-buscar-contato .searchbar-md {
+  background: #488aff;
+}
+
 page-contatos .searchbar-md {
   background: #488aff;
 }
