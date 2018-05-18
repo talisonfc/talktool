@@ -55,6 +55,7 @@ export class BuscarContatoPage implements OnInit {
       dados.contatos.push(contact.key)
 
       dbusuario.update(dados);
+      this.navCtrl.pop();
     })
   }
 

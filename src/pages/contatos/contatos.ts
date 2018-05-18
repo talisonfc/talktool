@@ -12,6 +12,7 @@ import { BuscarContatoPage } from '../buscar-contato/buscar-contato'
 export class ContatosPage implements OnInit{
 
   usuario: UsuarioModel
+  contatos: Array<UsuarioModel>;
   dbusuario: any
   login: any;
 
@@ -22,8 +23,20 @@ export class ContatosPage implements OnInit{
     this.login = this.navParams.get("login")
     this.dbusuario = this.navParams.get("db")
 
+    this.contatos = new Array<UsuarioModel>()
     this.dbusuario.on("value",snapshot=>{
       this.usuario = snapshot.val()
+      this.getDadosContatos(this.usuario);
+    })
+  }
+
+  getDadosContatos(usuario){
+    //Obter informações dos contatos
+    if(usuario.contatos == undefined) return;
+    this.usuario.contatos.forEach(uid=>{
+      database().ref("/usuarios/"+uid).once("value", snapshot=>{
+        this.contatos.push(snapshot.val())
+      })
     })
   }
 
@@ -35,7 +48,8 @@ export class ContatosPage implements OnInit{
    * 
    * @param contato key do contato
    */
-  createConversa(contato: any){
+  createConversa(index){
+    var contato = this.usuario.contatos[index]
     var dbconversa = database().ref("/conversas");
     dbconversa.push({criador: this.login.uid}).then(data=>{
       
@@ -56,6 +70,7 @@ export class ContatosPage implements OnInit{
 
         destinatario.conversas.push({conversa_id: data.key, destinatario_id: this.login.uid})
         dbdestinatario.update(destinatario)
+        this.navCtrl.pop();
       })
     })
 

@@ -7,6 +7,7 @@ import { ContatosPage } from '../../pages/contatos/contatos'
 import { database } from "firebase"
 import { DatabaseProvider } from '../../providers/database/database';
 import { Observable } from 'rxjs/Observable';
+import { LoginPage } from '../login/login';
 
 @Component({
   selector: 'page-home',
@@ -15,6 +16,7 @@ import { Observable } from 'rxjs/Observable';
 export class HomePage implements OnInit {
 
   usuario?: UsuarioModel;
+  contatos: Array<UsuarioModel>;
   login: any;
   db: any;
 
@@ -38,19 +40,36 @@ export class HomePage implements OnInit {
 
   // Carrega dados do banco
   init(){
+    this.contatos = new Array<UsuarioModel>()
     this.db.on('value', data=>{
       this.usuario = data.val();
+      this.getDadosContatos(this.usuario)
     })
   }
 
-  openConversa(conversa_id){
-    //console.log(conversa_id)
-    var conversa = database().ref("/conversas/"+conversa_id);
+  getDadosContatos(usuario){
+    //Obter informações dos contatos
+    if(usuario.conversas == undefined) return;
+    this.usuario.conversas.forEach(conversa=>{
+      database().ref("/usuarios/"+conversa.destinatario_id).once("value", snapshot=>{
+        this.contatos.push(snapshot.val())
+      })
+    })
+  }
+
+  openConversa(index){
+    // console.log(index)
+    // console.log(this.usuario.conversas[index])
+    var conversa = database().ref("/conversas/"+this.usuario.conversas[index]['conversa_id']);
     this.navCtrl.push(ConversaPage, {conversa: conversa, uid: this.login.uid})
     
   }
 
   listContatos(){
     this.navCtrl.push(ContatosPage, {login: this.login, db: this.db})
+  }
+
+  exit(){
+    this.navCtrl.setRoot(LoginPage)
   }
 }
