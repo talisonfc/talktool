@@ -1,6 +1,6 @@
 webpackJsonp([4],{
 
-/***/ 104:
+/***/ 105:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -24,7 +24,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var BuscarContatoPage = /** @class */ (function () {
-    function BuscarContatoPage(navCtrl, navParams) {
+    function BuscarContatoPage(toast, navCtrl, navParams) {
+        this.toast = toast;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
     }
@@ -55,12 +56,29 @@ var BuscarContatoPage = /** @class */ (function () {
         var dados;
         dbusuario.once("value", function (snapshot) {
             dados = snapshot.val();
+            var contato_existe = false;
             if (!dados.contatos) {
                 dados.contatos = new Array();
             }
-            dados.contatos.push(contact.key);
-            dbusuario.update(dados);
-            _this.navCtrl.pop();
+            else {
+                dados.contatos.forEach(function (el) {
+                    if (el = contact.key) {
+                        contato_existe = true;
+                    }
+                });
+            }
+            if (!contato_existe) {
+                dados.contatos.push(contact.key);
+                dbusuario.update(dados);
+                _this.navCtrl.pop();
+            }
+            else {
+                var toast = _this.toast.create({
+                    message: "Este contato já faz parte de sua lista de contatos",
+                    duration: 3000
+                });
+                toast.present();
+            }
         });
     };
     BuscarContatoPage.prototype.searchItems = function ($event) {
@@ -88,16 +106,17 @@ var BuscarContatoPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-buscar-contato',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/buscar-contato/buscar-contato.html"*/'\n<ion-header>\n\n  <ion-navbar [color]="\'primary\'">\n    <ion-title>Buscar contato</ion-title>\n  </ion-navbar>\n\n  <ion-searchbar [(ngModel)]="busca" (keypress)="find($event)"  (ionInput)="searchItems($event)"></ion-searchbar>\n</ion-header>\n\n\n<ion-content padding>\n  <ion-card *ngFor="let contact of usuarios">\n    <ion-card-header (click)="addContato(contact)">\n      {{contact.nome}}\n    </ion-card-header>\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/buscar-contato/buscar-contato.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]) === "function" && _c || Object])
     ], BuscarContatoPage);
     return BuscarContatoPage;
+    var _a, _b, _c;
 }());
 
 //# sourceMappingURL=buscar-contato.js.map
 
 /***/ }),
 
-/***/ 105:
+/***/ 106:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -106,7 +125,7 @@ var BuscarContatoPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_firebase__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__buscar_contato_buscar_contato__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__buscar_contato_buscar_contato__ = __webpack_require__(105);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -121,7 +140,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var ContatosPage = /** @class */ (function () {
-    function ContatosPage(navCtrl, navParams) {
+    function ContatosPage(toast, navCtrl, navParams) {
+        this.toast = toast;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
     }
@@ -155,15 +175,39 @@ var ContatosPage = /** @class */ (function () {
      */
     ContatosPage.prototype.createConversa = function (index) {
         var _this = this;
-        var contato = this.usuario.contatos[index];
+        var contato_id = this.usuario.contatos[index];
+        if (this.usuario.conversas == undefined) {
+            this.usuario.conversas = new Array();
+        }
+        //Já existe pelo menos uma conversa cridada
+        if (this.usuario.conversas.length > 0) {
+            var conversa_criada_1 = false;
+            this.usuario.conversas.forEach(function (conversa) {
+                if (conversa.destinatario_id == contato_id) {
+                    conversa_criada_1 = true;
+                    var toast = _this.toast.create({
+                        message: "Você já está conversando com este contato",
+                        duration: 3000
+                    });
+                    toast.present();
+                    return;
+                }
+            });
+            if (!conversa_criada_1) {
+                this.createConversaProcess(contato_id);
+            }
+        }
+        else {
+            this.createConversaProcess(contato_id);
+        }
+    };
+    ContatosPage.prototype.createConversaProcess = function (contato_id) {
+        var _this = this;
         var dbconversa = Object(__WEBPACK_IMPORTED_MODULE_2_firebase__["database"])().ref("/conversas");
         dbconversa.push({ criador: this.login.uid }).then(function (data) {
-            if (_this.usuario.conversas == undefined) {
-                _this.usuario.conversas = new Array();
-            }
-            _this.usuario.conversas.push({ conversa_id: data.key, destinatario_id: contato });
+            _this.usuario.conversas.push({ conversa_id: data.key, destinatario_id: contato_id });
             _this.dbusuario.update(_this.usuario);
-            var dbdestinatario = Object(__WEBPACK_IMPORTED_MODULE_2_firebase__["database"])().ref("/usuarios/" + contato);
+            var dbdestinatario = Object(__WEBPACK_IMPORTED_MODULE_2_firebase__["database"])().ref("/usuarios/" + contato_id);
             dbdestinatario.once("value", function (snapshot) {
                 var destinatario = snapshot.val();
                 if (destinatario.conversas == undefined) {
@@ -179,68 +223,13 @@ var ContatosPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-contatos',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/contatos/contatos.html"*/'\n<ion-header>\n\n  <ion-navbar [color]="\'primary\'">\n    <ion-title>Contatos</ion-title>\n    <ion-buttons right>\n      <button ion-button (click)="searchContatos()"><ion-icon name="search"></ion-icon></button>\n    </ion-buttons>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content>\n  <ion-card (click)="createConversa(uide)" *ngFor="let contato of contatos; index as uide">\n    <ion-card-header>\n      {{contato.nome}}\n    </ion-card-header>\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/contatos/contatos.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]) === "function" && _c || Object])
     ], ContatosPage);
     return ContatosPage;
+    var _a, _b, _c;
 }());
 
 //# sourceMappingURL=contatos.js.map
-
-/***/ }),
-
-/***/ 106:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(25);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_firebase__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_home_home__ = __webpack_require__(160);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-var LoginPage = /** @class */ (function () {
-    function LoginPage(navCtrl, navParams) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-    }
-    LoginPage.prototype.login = function (user, password) {
-        var _this = this;
-        //console.log(user+" "+password)
-        Object(__WEBPACK_IMPORTED_MODULE_2_firebase__["auth"])().signInWithEmailAndPassword(user, password).then(function (data) {
-            console.log(data['user']);
-            _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_3__pages_home_home__["a" /* HomePage */], { login: data['user'] });
-        }).catch(function (err) {
-            console.error(err);
-        });
-    };
-    LoginPage.prototype.entrar = function (user, password, event) {
-        if (event.key == "Enter") {
-            this.login(user, password);
-        }
-    };
-    LoginPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-login',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/login/login.html"*/'\n\n<ion-content padding>\n  <div class="login">\n    <ion-list>\n      \n      <div style="text-align: center">\n        <img [ngClass]="\'logo\'" src="https://st2.depositphotos.com/5142301/7567/v/950/depositphotos_75677235-stock-illustration-lion-head-logo.jpg">\n      </div>\n      \n      <ion-item>\n        <ion-label floating>Usuário</ion-label>\n        <ion-input type="email" #user value="talisonfer@ufrn.com.br"></ion-input>\n      </ion-item>\n      <ion-item>\n        <ion-label floating>Senha</ion-label>\n        <ion-input (keypress)="entrar(user.value,password.value, $event)" type="password" #password value="123456"></ion-input>\n      </ion-item>\n    </ion-list>\n\n    <button ion-button full (click)="login(user.value,password.value)">Entrar</button>\n    <button ion-button full clear>Cadastrar</button>\n    <button ion-button full clear>Esqueceu a senha?</button>\n  </div>\n\n</ion-content>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/login/login.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]])
-    ], LoginPage);
-    return LoginPage;
-}());
-
-//# sourceMappingURL=login.js.map
 
 /***/ }),
 
@@ -417,10 +406,10 @@ var UsuarioModel = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__model_usuario_model__ = __webpack_require__(159);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_conversa_conversa__ = __webpack_require__(107);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_contatos_contatos__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_contatos_contatos__ = __webpack_require__(106);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_firebase__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__login_login__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__login_login__ = __webpack_require__(53);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -491,10 +480,9 @@ var HomePage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-home',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/home/home.html"*/'<ion-header >\n  <ion-navbar [color]="\'primary\'">\n    <ion-title>\n      <ion-icon name=""></ion-icon> Talk\n    </ion-title>\n    <ion-buttons right>\n      <button ion-button>{{usuario.nome}}</button>\n      <button ion-button (click)="listContatos()"><ion-icon name="contact"></ion-icon></button>\n      <button ion-button (click)="exit()"><ion-icon name="exit"></ion-icon></button>\n    </ion-buttons>\n  </ion-navbar>\n  \n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <ion-item (click)="openConversa(cid)" *ngFor="let contato of contatos; index as cid">\n      <ion-avatar item-start>\n        <img src="">\n      </ion-avatar>\n      <h2>{{contato.nome}}</h2>\n      <button ion-button clear item-end>5</button>\n    </ion-item>\n  </ion-list>\n</ion-content>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/home/home.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]) === "function" && _b || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]])
     ], HomePage);
     return HomePage;
-    var _a, _b;
 }());
 
 //# sourceMappingURL=home.js.map
@@ -527,10 +515,10 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(203);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__(290);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__pages_home_home__ = __webpack_require__(160);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_login_login__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__pages_login_login__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_conversa_conversa__ = __webpack_require__(107);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_contatos_contatos__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_buscar_contato_buscar_contato__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_contatos_contatos__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_buscar_contato_buscar_contato__ = __webpack_require__(105);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__providers_database_database__ = __webpack_require__(291);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pipes_pipes_module__ = __webpack_require__(292);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -633,7 +621,7 @@ var ConversaModel = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(200);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_firebase__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_firebase__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_login_login__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_login_login__ = __webpack_require__(53);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -830,6 +818,62 @@ var InfoUserPipe = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=info-user.js.map
+
+/***/ }),
+
+/***/ 53:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_firebase__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_home_home__ = __webpack_require__(160);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var LoginPage = /** @class */ (function () {
+    function LoginPage(navCtrl, navParams) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+    }
+    LoginPage.prototype.login = function (user, password) {
+        var _this = this;
+        //console.log(user+" "+password)
+        Object(__WEBPACK_IMPORTED_MODULE_2_firebase__["auth"])().signInWithEmailAndPassword(user, password).then(function (data) {
+            console.log(data['user']);
+            _this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_3__pages_home_home__["a" /* HomePage */], { login: data['user'] });
+        }).catch(function (err) {
+            console.error(err);
+        });
+    };
+    LoginPage.prototype.entrar = function (user, password, event) {
+        if (event.key == "Enter") {
+            this.login(user, password);
+        }
+    };
+    LoginPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-login',template:/*ion-inline-start:"/home/wellida/Documentos/talk-with-firebase/src/pages/login/login.html"*/'\n\n<ion-content padding>\n  <div class="login">\n    <ion-list>\n      \n      <div style="text-align: center">\n        <img [ngClass]="\'logo\'" src="https://st2.depositphotos.com/5142301/7567/v/950/depositphotos_75677235-stock-illustration-lion-head-logo.jpg">\n      </div>\n      \n      <ion-item>\n        <ion-label floating>Usuário</ion-label>\n        <ion-input type="email" #user value="talisonfer@ufrn.com.br"></ion-input>\n      </ion-item>\n      <ion-item>\n        <ion-label floating>Senha</ion-label>\n        <ion-input (keypress)="entrar(user.value,password.value, $event)" type="password" #password value="123456"></ion-input>\n      </ion-item>\n    </ion-list>\n\n    <button ion-button full (click)="login(user.value,password.value)">Entrar</button>\n    <button ion-button full clear>Cadastrar</button>\n    <button ion-button full clear>Esqueceu a senha?</button>\n  </div>\n\n</ion-content>\n'/*ion-inline-end:"/home/wellida/Documentos/talk-with-firebase/src/pages/login/login.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */]])
+    ], LoginPage);
+    return LoginPage;
+}());
+
+//# sourceMappingURL=login.js.map
 
 /***/ })
 

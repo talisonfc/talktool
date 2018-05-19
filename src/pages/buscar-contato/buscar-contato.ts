@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { database } from "firebase"
 import { UsuarioModel } from '../../model/usuario.model';
 
@@ -15,7 +15,8 @@ export class BuscarContatoPage implements OnInit {
   login: any;
   busca: string
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private toast: ToastController,
+    public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ngOnInit(){
@@ -49,13 +50,30 @@ export class BuscarContatoPage implements OnInit {
     dbusuario.once("value",snapshot=>{
       dados = snapshot.val();
 
+      let contato_existe = false;
       if(!dados.contatos){
         dados.contatos = new Array<any>()
       }
-      dados.contatos.push(contact.key)
+      else{//Ja existe uma lista de contatos
+        dados.contatos.forEach(el=>{
+          if(el=contact.key){
+            contato_existe=true;
+          }
+        })
+      }
 
-      dbusuario.update(dados);
-      this.navCtrl.pop();
+      if(!contato_existe){//contato já existe
+        dados.contatos.push(contact.key)
+        dbusuario.update(dados);
+        this.navCtrl.pop();
+      }
+      else{//contato inexistente
+        let toast = this.toast.create({
+          message: "Este contato já faz parte de sua lista de contatos",
+          duration: 3000
+        })
+        toast.present();
+      }
     })
   }
 

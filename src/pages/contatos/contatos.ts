@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { database } from "firebase"
 import { UsuarioModel } from '../../model/usuario.model';
 import { BuscarContatoPage } from '../buscar-contato/buscar-contato'
@@ -16,7 +16,8 @@ export class ContatosPage implements OnInit{
   dbusuario: any
   login: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(private toast: ToastController,
+    public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ngOnInit(){
@@ -49,18 +50,45 @@ export class ContatosPage implements OnInit{
    * @param contato key do contato
    */
   createConversa(index){
-    var contato = this.usuario.contatos[index]
+    var contato_id = this.usuario.contatos[index]
+
+    if(this.usuario.conversas == undefined){
+      this.usuario.conversas = new Array<any>();
+    }
+
+    //Já existe pelo menos uma conversa cridada
+    if(this.usuario.conversas.length>0){
+      let conversa_criada = false;
+      this.usuario.conversas.forEach((conversa)=>{
+        if(conversa.destinatario_id == contato_id){
+          conversa_criada = true;
+          let toast = this.toast.create({
+            message: "Você já está conversando com este contato",
+            duration: 3000
+          })
+          toast.present();
+          return;
+        }
+      })
+      
+      if(!conversa_criada){
+        this.createConversaProcess(contato_id)
+      }
+      
+    }
+    else{//Não existe nenhuma conversa criada
+      this.createConversaProcess(contato_id)
+    }
+  }
+
+  createConversaProcess(contato_id){
     var dbconversa = database().ref("/conversas");
     dbconversa.push({criador: this.login.uid}).then(data=>{
-      
-      if(this.usuario.conversas == undefined){
-        this.usuario.conversas = new Array<any>();
-      }
   
-      this.usuario.conversas.push({conversa_id: data.key, destinatario_id: contato})
+      this.usuario.conversas.push({conversa_id: data.key, destinatario_id: contato_id})
       this.dbusuario.update(this.usuario)
 
-      var dbdestinatario = database().ref("/usuarios/"+contato);
+      var dbdestinatario = database().ref("/usuarios/"+contato_id);
       dbdestinatario.once("value", snapshot=>{
         var destinatario = snapshot.val()
 
@@ -73,6 +101,5 @@ export class ContatosPage implements OnInit{
         this.navCtrl.pop();
       })
     })
-
   }
 }
